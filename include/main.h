@@ -54,7 +54,7 @@
  * concurrently! The okapi namespace will export all symbols inside the pros
  * namespace.
  */
-// using namespace pros;
+using namespace pros;
 // using namespace pros::literals;
 // using namespace okapi;
 
@@ -80,6 +80,7 @@ void opcontrol(void);
  * You can add C++-only headers here
  */
  #include "Custom headers/Autons.hpp"
+ #include "Custom headers/PTO.hpp"
  
 //#include <iostream>
 #endif

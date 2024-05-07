@@ -5,23 +5,6 @@
 
 bool auto_started = false;
 int current_auton_selection = 0;
-bool pto_piston_enabled = false;  // Current PTO state
-
-/**
- * A callback function for LLEMU's center button.
- *
- * When this callback is fired, it will toggle line 2 of the LCD text between
- * "I was pressed!" and nothing.
- */
-void on_center_button() {
-	static bool pressed = false;
-	pressed = !pressed;
-	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
-	} else {
-		pros::lcd::clear_line(2);
-	}
-}
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -34,11 +17,10 @@ void initialize() {
   chassis.calibrate();
   ez::as::initialize();
 	pros::lcd::initialize();
-	pros::lcd::register_btn1_cb(on_center_button);
 
   ez::as::auton_selector.autons_add({
     Auton("Solo Auton Win Point", SoloAWP),
-
+    
   });
 }
 
@@ -61,7 +43,9 @@ void disabled() {
  * This task will exit when the robot is enabled and autonomous or opcontrol
  * starts.
  */
-void competition_initialize() {}
+void competition_initialize() {
+
+}
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -79,12 +63,19 @@ void autonomous() {
 }
 
 void opcontrol() {
-
+ez::as::shutdown();
+ezchassis.opcontrol_drive_activebrake_set(2);
 	while (true) {
+    
 		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
 		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
 		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
-		// get left y and right x positions
+		
+    
+    lift_control();
+    
+    
+    // get left y and right x positions
         int leftY = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
         int rightX = master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
 

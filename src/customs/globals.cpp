@@ -2,26 +2,26 @@
 
 ez::Drive ezchassis (
   // Left Chassis Ports (negative=reverse)
-  {-14, -13, 12}
+  {13, 12, 11}
   // Right Chassis Ports (negative=reverse)
-  ,{18, 19, -20}
+  ,{-18, -19, -20}
   // IMU Port
-  ,11
+  ,10
   // Wheel Diameter
   ,4
   // Cartridge RPM
   ,600
   // External Gear Ratio
-  ,1.75);
+  ,75);
 
-pros::Controller master(pros::E_CONTROLLER_MASTER);
+pros::Controller master(CONTROLLER_MASTER);
 
-pros::Motor FL(-1, pros::E_MOTOR_GEAR_BLUE); // left_motor_group
-pros::Motor ML(-2, pros::E_MOTOR_GEAR_BLUE); // left_motor_group
-pros::Motor BL(-3, pros::E_MOTOR_GEAR_BLUE); // left_motor_group
-pros::Motor FR(4, pros::E_MOTOR_GEAR_BLUE); // right_motor_group
-pros::Motor MR(5, pros::E_MOTOR_GEAR_BLUE); // right_motor_group
-pros::Motor BR(6, pros::E_MOTOR_GEAR_BLUE); // right_motor_group
+pros::Motor FL(13, MOTOR_GEAR_BLUE); // left_motor_group
+pros::Motor ML(12, MOTOR_GEAR_BLUE); // left_motor_group
+pros::Motor BL(11, MOTOR_GEAR_BLUE); // left_motor_group
+pros::Motor FR(-18, MOTOR_GEAR_BLUE); // right_motor_group
+pros::Motor MR(-19, MOTOR_GEAR_BLUE); // right_motor_group
+pros::Motor BR(-20, MOTOR_GEAR_BLUE); // right_motor_group
 
 // left motor group
 pros::MotorGroup leftdrive({ FL, ML, BL });
@@ -33,9 +33,9 @@ Piston pto_lift_piston('A');    // PTO piston
 // drivetrain settings
 lemlib::Drivetrain drivetrain(&leftdrive, // left motor group
                               &rightdrive, // right motor group
-                              10, // 10 inch track width
+                              12.482, // 10 inch track width
                               lemlib::Omniwheel::NEW_4, // using new 4" omnis
-                              360, // drivetrain rpm is 360
+                              343, // drivetrain rpm is 360
                               2 // horizontal drift is 2 (for now)
 );
 
@@ -83,15 +83,15 @@ lemlib::ControllerSettings angular_controller(2, // proportional gain (kP)
 );
 
 // input curve for throttle input during driver control
-lemlib::ExpoDriveCurve throttle_curve(3, // joystick deadband out of 127
+lemlib::ExpoDriveCurve throttle_curve(5, // joystick deadband out of 127
                                      10, // minimum output where drivetrain will move out of 127
-                                     7.7 // expo curve gain
+                                     1.05 // expo curve gain
 );
 
 // input curve for steer input during driver control
-lemlib::ExpoDriveCurve steer_curve(3, // joystick deadband out of 127
+lemlib::ExpoDriveCurve steer_curve(5, // joystick deadband out of 127
                                   10, // minimum output where drivetrain will move out of 127
-                                  5.2 // expo curve gain
+                                  1.05 // expo curve gain
 );
 
 // create the chassis
